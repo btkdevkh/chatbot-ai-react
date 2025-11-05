@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import Loader from "./Loader";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -32,45 +33,67 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="max-w-[720px] min-w-[320px] mx-auto p-4 text-white">
-      <div className="flex flex-col gap-3">
-        {messages.length === 0 && (
-          <h2 className="text-3xl mb-3">Comment puis-je vous aider ?</h2>
+    <div className={`max-w-[1200px] min-w-[320px] mx-auto py-4 text-white`}>
+      <div className="md:flex md:gap-4">
+        {/* Historique des questions */}
+        {messages.length > 0 && (
+          <div className="md:border-r md:border-gray-700 md:px-4 flex-1">
+            <h3 className="text-2xl mb-5">Historique des questions</h3>
+
+            {/* Affichage des messages  */}
+            <div className="flex flex-col gap-3 mb-6 max-h-60 overflow-y-auto">
+              {messages
+                .filter((msg) => msg.sender === "user")
+                .map((msg, i) => (
+                  <a
+                    key={i}
+                    className="bg-gray-800 py-1.5 px-3 rounded-xl w-fit"
+                    href={`#${msg.text.split(" ").join("-")}`}
+                  >
+                    {msg.text}
+                  </a>
+                ))}
+            </div>
+          </div>
         )}
 
-        <div>
-          {messages.map((msg, i) => (
-            <div key={i}>
-              <p
-                className={`w-fit ${
-                  msg.sender === "user"
-                    ? "bg-[#303030] p-3 rounded-2xl mt-3 mb-3"
-                    : "p-1"
-                }`}
-              >
-                {msg.text}
-              </p>
-            </div>
-          ))}
-        </div>
+        <div className="w-full mx-auto flex flex-col gap-3 flex-3">
+          {messages.length === 0 && (
+            <h2 className="text-3xl mb-3">Comment puis-je vous aider ?</h2>
+          )}
 
-        <form className="flex gap-2" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={
-              loading ? "Le bot réfléchit..." : "Posez une question..."
-            }
-            className="w-full border border-violet-400 p-3 rounded-2xl"
-          />
-          <button
-            type="submit"
-            className="bg-violet-700 py-3 px-5 rounded-2xl font-bold cursor-pointer hover:bg-violet-800 transition"
-          >
-            Envoyer
-          </button>
-        </form>
+          <div className="flex flex-col gap-3">
+            {messages.map((msg, i) => (
+              <div key={i} id={msg.text.split(" ").join("-")}>
+                <p
+                  className={`w-fit ${
+                    msg.sender === "user"
+                      ? "bg-[#303030] p-2.5 rounded-2xl"
+                      : "p-1"
+                  }`}
+                >
+                  {msg.text}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <form className="flex gap-2" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Posez une question..."
+              className="w-full border-2 border-violet-400 p-2.5 rounded-2xl focus:border-violet-600 outline-none"
+            />
+            <button
+              type="submit"
+              className="w-[85px] bg-violet-700 p-2.5 rounded-2xl font-bold cursor-pointer hover:bg-violet-800 transition"
+            >
+              {loading ? <Loader /> : "Envoyer"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
