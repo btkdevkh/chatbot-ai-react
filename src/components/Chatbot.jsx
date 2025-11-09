@@ -33,20 +33,23 @@ export default function Chatbot() {
   };
 
   return (
-    <div className={`max-w-[1200px] min-w-[320px] mx-auto py-4 text-white`}>
-      <div className="md:flex md:gap-4">
+    <div
+      className={`max-w-[1200px] ${
+        messages.length === 0 ? "w-[600px]" : ""
+      }  min-w-[320px] mx-auto py-4 text-white`}
+    >
+      <div className="md:flex md:gap-5">
         {messages.length > 0 && (
-          <div className="md:border-r md:border-gray-700 md:px-4 flex-1">
-            <h2 className="text-3xl mb-3">Historique des questions</h2>
-
+          <div className="bg-[#1f2839] px-4 py-5 flex-1 rounded-2xl h-fit mb-5">
             {/* Historique des questions */}
-            <div className="flex flex-col gap-3 mb-6 max-h-60 overflow-y-auto">
+            <h2 className="text-2xl mb-5">Historique des questions</h2>
+            <div className="flex flex-col gap-2">
               {messages
                 .filter((msg) => msg.sender === "user")
                 .map((msg, i) => (
                   <a
                     key={i}
-                    className="bg-gray-800 p-3 rounded-2xl w-fit"
+                    className="bg-gray-900 p-3 rounded-2xl w-fit"
                     href={`#${msg.text.split(" ").join("-")}`}
                   >
                     {msg.text}
@@ -58,7 +61,9 @@ export default function Chatbot() {
 
         <div className="w-full mx-auto flex flex-col gap-3 flex-3">
           {messages.length === 0 && (
-            <h2 className="text-3xl mb-3">Comment puis-je vous aider ?</h2>
+            <h2 className="text-3xl mb-5">
+              Bonjour, comment puis-je vous aider ?
+            </h2>
           )}
 
           <div className="flex flex-col gap-3">
@@ -67,7 +72,7 @@ export default function Chatbot() {
                 <p
                   className={`wrap-anywhere ${
                     msg.sender === "user"
-                      ? "bg-[#303030] p-3 rounded-2xl"
+                      ? "bg-[#303030] p-3 rounded-2xl w-fit"
                       : "p-1"
                   }`}
                 >
@@ -87,7 +92,7 @@ export default function Chatbot() {
             />
             <button
               type="submit"
-              className="w-[85px] bg-violet-700 p-3 rounded-2xl font-bold cursor-pointer hover:bg-violet-800 transition"
+              className="w-[100px] bg-violet-700 p-3 rounded-2xl font-bold cursor-pointer hover:bg-violet-800 transition"
             >
               {loading ? <Loader /> : "Envoyer"}
             </button>
