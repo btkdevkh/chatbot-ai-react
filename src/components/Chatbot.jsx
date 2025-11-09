@@ -34,8 +34,8 @@ export default function Chatbot() {
 
   return (
     <div
-      className={`max-w-[1200px] ${
-        messages.length === 0 ? "w-[600px]" : ""
+      className={`${
+        messages.length === 0 ? "max-w-[600px]" : "max-w-[1200px]"
       }  min-w-[320px] mx-auto py-4 text-white`}
     >
       <div className="md:flex md:gap-5">
