@@ -23,7 +23,7 @@ export default function Chatbot() {
     setLoading(true);
     const res = await axios.post(API_URL, {
       message: input,
-      replyHistory: messages,
+      questions: messages,
     });
 
     const botMessage = { sender: "bot", text: res.data.answer };
